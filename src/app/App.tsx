@@ -1,91 +1,81 @@
+import { useState } from 'react';
+import { PhoneFrame } from './components/PhoneFrame';
 import { WeeklyCommit } from './components/WeeklyCommit';
-import { HomeFeed } from './components/HomeFeed';
-import { EndOfDaySummary } from './components/EndOfDaySummary';
-import { WeeklyReflectionFilled } from './components/WeeklyReflectionFilled';
-import { GoalProgress } from './components/GoalProgress';
-import { ProfilePage } from './components/ProfilePage';
 import { PostCreation } from './components/PostCreation';
-import { Notifications } from './components/Notifications';
-import { ArrowRight } from 'lucide-react';
+import { HomeFeed } from './components/HomeFeed';
+import { GoalProgress } from './components/GoalProgress';
+import { WeeklyDiary } from './components/WeeklyDiary';
+import { ProfilePage } from './components/ProfilePage';
+import { Leaf } from 'lucide-react';
+
+export type Screen = 'start' | 'weekly-commit' | 'post-creation' | 'home-feed' | 'goal-progress' | 'diary' | 'profile';
+
+export interface DiaryEntry {
+  week: string;
+  answers: string[];
+  additionalThoughts: string;
+  images: string[];
+}
 
 export default function App() {
+  const [screen, setScreen] = useState<Screen>('start');
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [postedTask, setPostedTask] = useState<string>('');
+  const [savedDiary, setSavedDiary] = useState<DiaryEntry | null>(null);
+
+  const handleCommitDone = (taskTexts: string[]) => {
+    setTasks(taskTexts.filter(t => t.trim() !== ''));
+    setScreen('post-creation');
+  };
+
+  const handlePost = (selectedTask: string) => {
+    setPostedTask(selectedTask);
+    setScreen('home-feed');
+  };
+
+  const handleSaveDiary = (entry: DiaryEntry) => {
+    setSavedDiary(entry);
+    setScreen('profile');
+  };
+
   return (
-    <div className="min-h-screen bg-[#FDF8F2] p-12 overflow-x-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl text-[#3B4A2F] mb-2" style={{ fontFamily: 'Canela, serif', fontWeight: 400 }}>Rooted — Mobile App Mockup</h1>
-        <p className="text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Weekly habit and accountability app flow</p>
-      </div>
-      
-      <div className="flex items-center gap-8">
-        {/* Screen 1 */}
-        <div className="flex-shrink-0">
-          <WeeklyCommit />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 1: Weekly Commit</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 2 */}
-        <div className="flex-shrink-0">
-          <HomeFeed />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 2: Home Feed</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 3 */}
-        <div className="flex-shrink-0">
-          <EndOfDaySummary />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 3: Weekly Reflection</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 4B */}
-        <div className="flex-shrink-0">
-          <WeeklyReflectionFilled />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 4B: Reflection (Filled)</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 4 */}
-        <div className="flex-shrink-0">
-          <GoalProgress />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 4: Goal Progress</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 5 */}
-        <div className="flex-shrink-0">
-          <ProfilePage />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 5: Profile</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 6 */}
-        <div className="flex-shrink-0">
-          <PostCreation />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 6: Post Creation</p>
-        </div>
-
-        {/* Arrow */}
-        <ArrowRight className="flex-shrink-0 text-[#1A1A1A] opacity-40" size={32} />
-
-        {/* Screen 7 */}
-        <div className="flex-shrink-0">
-          <Notifications />
-          <p className="text-center mt-4 text-sm text-[#1A1A1A]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Screen 7: Notifications</p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#FDF8F2] flex items-center justify-center">
+      {screen === 'start' && (
+        <PhoneFrame>
+          <button
+            onClick={() => setScreen('weekly-commit')}
+            className="h-full w-full flex flex-col items-center justify-center gap-6 cursor-pointer"
+          >
+            <div className="w-20 h-20 rounded-full bg-[#3B4A2F] flex items-center justify-center">
+              <Leaf size={40} color="white" />
+            </div>
+            <h1 className="text-3xl text-[#3B4A2F]" style={{ fontFamily: 'Canela, serif', fontWeight: 400 }}>
+              Rooted
+            </h1>
+            <p className="text-[#8B6F47] text-sm" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+              Tap anywhere to begin
+            </p>
+          </button>
+        </PhoneFrame>
+      )}
+      {screen === 'weekly-commit' && (
+        <WeeklyCommit onNavigate={setScreen} onCommit={handleCommitDone} />
+      )}
+      {screen === 'post-creation' && (
+        <PostCreation onNavigate={setScreen} tasks={tasks} onPost={handlePost} />
+      )}
+      {screen === 'home-feed' && (
+        <HomeFeed onNavigate={setScreen} postedTask={postedTask} />
+      )}
+      {screen === 'goal-progress' && (
+        <GoalProgress onNavigate={setScreen} />
+      )}
+      {screen === 'diary' && (
+        <WeeklyDiary onNavigate={setScreen} tasks={tasks} onSave={handleSaveDiary} />
+      )}
+      {screen === 'profile' && (
+        <ProfilePage onNavigate={setScreen} savedDiary={savedDiary} />
+      )}
     </div>
   );
 }

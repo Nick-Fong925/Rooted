@@ -1,7 +1,10 @@
 import { PhoneFrame } from './PhoneFrame';
 import { BottomNav } from './BottomNav';
+import type { Screen } from '../App';
 
-const MAYA_AVATAR = 'https://images.unsplash.com/photo-1771757019737-4468ded75c97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMGFzaWFuJTIwd29tYW4lMjBwb3J0cmFpdCUyMG5hdHVyYWwlMjBjYXN1YWx8ZW58MXx8fHwxNzczOTQ3OTIyfDA&ixlib=rb-4.1.0&q=80&w=1080';
+interface GoalProgressProps {
+  onNavigate: (screen: Screen) => void;
+}
 
 const tasks = [
   { name: 'Morning walk', frequency: 5, completed: [true, true, false, true, true], current: 4 },
@@ -13,18 +16,17 @@ const tasks = [
 
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
-// Calculate overall completion
 const totalCompleted = tasks.reduce((sum, task) => sum + task.current, 0);
 const totalRequired = tasks.reduce((sum, task) => sum + task.frequency, 0);
 const completionPercentage = Math.round((totalCompleted / totalRequired) * 100);
 
-export function GoalProgress() {
+export function GoalProgress({ onNavigate }: GoalProgressProps) {
   return (
     <PhoneFrame>
       <div className="h-full flex flex-col pt-14">
         {/* Header */}
         <div className="px-6 py-6 border-b border-[#EDE8DF]">
-          <h1 className="text-xl text-[#3B4A2F]" style={{ fontFamily: 'Canela, serif', fontWeight: 400 }}>Your Roots · Week 4</h1>
+          <h1 className="text-xl text-[#3B4A2F]" style={{ fontFamily: 'Canela, serif', fontWeight: 400 }}>Your Roots · Week 5</h1>
         </div>
 
         {/* Content */}
@@ -37,13 +39,12 @@ export function GoalProgress() {
                   <p className="text-[#1A1A1A]">{task.name}</p>
                   <p className="text-sm text-[#1A1A1A]">{task.current}/{task.frequency}</p>
                 </div>
-                
+
                 {/* Streak Bar */}
                 <div className="flex gap-1.5">
                   {task.completed.map((isCompleted, dayIndex) => {
-                    // Determine if this is "today" (5th index = Saturday)
                     const isToday = dayIndex === 5 && dayIndex < task.frequency;
-                    
+
                     return (
                       <div key={dayIndex} className="flex-1 flex flex-col items-center gap-1">
                         <div
@@ -105,7 +106,7 @@ export function GoalProgress() {
           </div>
         </div>
 
-        <BottomNav active="progress" />
+        <BottomNav active="progress" onNavigate={onNavigate} />
       </div>
     </PhoneFrame>
   );
