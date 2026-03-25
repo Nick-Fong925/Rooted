@@ -18,7 +18,7 @@ export function PostCreation({ onNavigate, tasks, onPost }: PostCreationProps) {
         {/* Full-bleed camera viewfinder */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1758874960608-f0d7f38d9846?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob21lbWFkZSUyMGZvb2QlMjBib3lsJTIwa2l0Y2hlbiUyMGNvdW50ZXJ8ZW58MXx8fHwxNzczOTQ3NTM0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+            src="https://images.unsplash.com/photo-1529473814998-077b4fec6770?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080"
             alt="Post preview"
             className="w-full h-full object-cover"
           />

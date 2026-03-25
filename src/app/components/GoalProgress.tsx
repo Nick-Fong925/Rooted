@@ -1,26 +1,55 @@
+import { useMemo } from 'react';
 import { PhoneFrame } from './PhoneFrame';
 import { BottomNav } from './BottomNav';
 import type { Screen } from '../App';
 
 interface GoalProgressProps {
   onNavigate: (screen: Screen) => void;
+  tasks: string[];
+  frequencies: number[];
 }
-
-const tasks = [
-  { name: 'Morning walk', frequency: 5, completed: [true, true, false, true, true], current: 4 },
-  { name: 'Read 20 pages', frequency: 4, completed: [true, true, true, false], current: 3 },
-  { name: 'No social media before 9am', frequency: 7, completed: [true, false, true, true, false, true, false], current: 4 },
-  { name: 'Cook dinner at home', frequency: 3, completed: [false, true, true], current: 2 },
-  { name: '10 min journaling', frequency: 4, completed: [true, true, false, true], current: 3 }
-];
 
 const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
-const totalCompleted = tasks.reduce((sum, task) => sum + task.current, 0);
-const totalRequired = tasks.reduce((sum, task) => sum + task.frequency, 0);
-const completionPercentage = Math.round((totalCompleted / totalRequired) * 100);
+function generateCompletion(frequency: number, seed: number): { completed: boolean[]; current: number } {
+  // Random completion between 60% and 100%, rounded up
+  const minComplete = Math.ceil(frequency * 0.6);
+  // Use seed for stable random so it doesn't change on re-render
+  const range = frequency - minComplete + 1;
+  const numComplete = minComplete + (seed % range);
+  const current = Math.min(numComplete, frequency);
 
-export function GoalProgress({ onNavigate }: GoalProgressProps) {
+  // Distribute completed days randomly using seed
+  const completed = Array(frequency).fill(false);
+  let remaining = current;
+  let s = seed;
+  const indices = Array.from({ length: frequency }, (_, i) => i);
+  // Simple seeded shuffle
+  for (let i = indices.length - 1; i > 0; i--) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i + 1);
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  for (let i = 0; i < remaining; i++) {
+    completed[indices[i]] = true;
+  }
+
+  return { completed, current };
+}
+
+export function GoalProgress({ onNavigate, tasks, frequencies }: GoalProgressProps) {
+  const progressTasks = useMemo(() => {
+    if (tasks.length === 0) return [];
+    return tasks.map((name, i) => {
+      const frequency = frequencies[i] || 1;
+      const { completed, current } = generateCompletion(frequency, i * 7 + 3);
+      return { name, frequency, completed, current };
+    });
+  }, [tasks, frequencies]);
+
+  const totalCompleted = progressTasks.reduce((sum, task) => sum + task.current, 0);
+  const totalRequired = progressTasks.reduce((sum, task) => sum + task.frequency, 0);
+  const completionPercentage = totalRequired > 0 ? Math.round((totalCompleted / totalRequired) * 100) : 0;
   return (
     <PhoneFrame>
       <div className="h-full flex flex-col pt-14">
@@ -33,7 +62,7 @@ export function GoalProgress({ onNavigate }: GoalProgressProps) {
         <div className="flex-1 overflow-y-auto px-6 py-6 pb-24">
           {/* Task Rows */}
           <div className="space-y-4 mb-8">
-            {tasks.map((task, index) => (
+            {progressTasks.map((task, index) => (
               <div key={index} className="bg-white rounded-3xl p-4 shadow-sm">
                 <div className="flex items-center justify-between mb-3" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
                   <p className="text-[#1A1A1A]">{task.name}</p>

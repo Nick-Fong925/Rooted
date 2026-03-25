@@ -4,14 +4,14 @@ import type { Screen } from '../App';
 
 interface WeeklyCommitProps {
   onNavigate: (screen: Screen) => void;
-  onCommit: (tasks: string[]) => void;
+  onCommit: (tasks: string[], frequencies: (number | null)[]) => void;
 }
 
 const TASK_COUNT = 5;
 
 export function WeeklyCommit({ onCommit }: WeeklyCommitProps) {
-  const [texts, setTexts] = useState<string[]>(Array(TASK_COUNT).fill(''));
-  const [frequencies, setFrequencies] = useState<(number | null)[]>(Array(TASK_COUNT).fill(null));
+  const [texts, setTexts] = useState<string[]>(['Reading 30 minutes', ...Array(TASK_COUNT - 1).fill('')]);
+  const [frequencies, setFrequencies] = useState<(number | null)[]>([5, ...Array(TASK_COUNT - 1).fill(null)]);
 
   const updateText = (index: number, value: string) => {
     setTexts(prev => {
@@ -53,7 +53,7 @@ export function WeeklyCommit({ onCommit }: WeeklyCommitProps) {
             {/* Task Cards */}
             <div className="space-y-3">
               {Array.from({ length: TASK_COUNT }, (_, index) => (
-                <div key={index} className="bg-[#EDE8DF] rounded-3xl p-4">
+                <div key={index} className={`rounded-3xl p-4 ${index === 0 ? 'bg-[#E2DDD4]' : 'bg-[#EDE8DF]'}`}>
                   <p className="text-xs text-[#8B6F47] mb-2" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
                     Task {index + 1}
                   </p>
@@ -63,11 +63,12 @@ export function WeeklyCommit({ onCommit }: WeeklyCommitProps) {
                     value={texts[index]}
                     onChange={(e) => updateText(index, e.target.value)}
                     placeholder="What will you commit to?"
-                    className="w-full bg-[#FDF8F2] rounded-lg px-3 py-2.5 mb-3 outline-none"
+                    disabled={index === 0}
+                    className={`w-full rounded-lg px-3 py-2.5 mb-3 outline-none ${index === 0 ? 'bg-[#E8E3DA] cursor-not-allowed' : 'bg-[#FDF8F2]'}`}
                     style={{
                       fontFamily: 'Helvetica Neue, Arial, sans-serif',
                       border: '1px solid rgba(59, 74, 47, 0.2)',
-                      color: texts[index] ? '#1A1A1A' : '#8B6F47'
+                      color: index === 0 ? '#9B8E7E' : (texts[index] ? '#1A1A1A' : '#8B6F47')
                     }}
                   />
 
@@ -75,10 +76,15 @@ export function WeeklyCommit({ onCommit }: WeeklyCommitProps) {
                     {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                       <button
                         key={num}
-                        onClick={() => updateFrequency(index, num)}
+                        onClick={() => index !== 0 && updateFrequency(index, num)}
+                        disabled={index === 0}
                         className={`w-7 h-7 rounded-full flex items-center justify-center ${
-                          num === frequencies[index]
+                          index === 0 && num === frequencies[index]
+                            ? 'bg-[#7A8672] text-white/80 cursor-not-allowed'
+                            : num === frequencies[index]
                             ? 'bg-[#3B4A2F] text-white'
+                            : index === 0
+                            ? 'bg-transparent border border-[#3B4A2F]/40 text-[#3B4A2F]/40 cursor-not-allowed'
                             : 'bg-transparent border border-[#3B4A2F] text-[#3B4A2F]'
                         }`}
                         style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontSize: '13px', fontWeight: num === frequencies[index] ? 500 : 400 }}
@@ -101,7 +107,7 @@ export function WeeklyCommit({ onCommit }: WeeklyCommitProps) {
           <div className="h-8 bg-gradient-to-t from-[#FDF8F2] to-transparent" />
           <div className="bg-[#FDF8F2] px-6 pb-6">
             <button
-              onClick={() => onCommit(texts)}
+              onClick={() => onCommit(texts, frequencies)}
               className="w-full bg-[#3B4A2F] text-white py-4 rounded-2xl text-lg"
               style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif', fontWeight: 500 }}
             >

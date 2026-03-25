@@ -251,14 +251,14 @@ export function HomeFeed({ onNavigate, postedTask }: HomeFeedProps) {
   const userPost: PostData = {
     name: 'You',
     task: postedTask || 'My commitment',
-    caption: 'Checking in — keeping myself accountable!',
+    caption: 'Coffee and a good book — 30 minutes down!',
     streak: 1,
     leaves: 0,
-    image: 'https://images.unsplash.com/photo-1758874960608-f0d7f38d9846?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob21lbWFkZSUyMGZvb2QlMjBib3lsJTIwa2l0Y2hlbiUyMGNvdW50ZXJ8ZW58MXx8fHwxNzczOTQ3NTM0fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: 'https://images.unsplash.com/photo-1529473814998-077b4fec6770?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
     avatar: '',
     comments: [
-      { name: 'Jordan', text: 'Welcome to Rooted! You got this 💪' },
-      { name: 'Alex', text: 'Great start!' }
+      { name: 'Jordan', text: 'Love the reading spot! You got this 💪' },
+      { name: 'Alex', text: 'Great way to start the habit!' }
     ]
   };
 

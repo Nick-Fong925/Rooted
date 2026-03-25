@@ -20,11 +20,21 @@ export interface DiaryEntry {
 export default function App() {
   const [screen, setScreen] = useState<Screen>('start');
   const [tasks, setTasks] = useState<string[]>([]);
+  const [frequencies, setFrequencies] = useState<number[]>([]);
   const [postedTask, setPostedTask] = useState<string>('');
   const [savedDiary, setSavedDiary] = useState<DiaryEntry | null>(null);
 
-  const handleCommitDone = (taskTexts: string[]) => {
-    setTasks(taskTexts.filter(t => t.trim() !== ''));
+  const handleCommitDone = (taskTexts: string[], taskFrequencies: (number | null)[]) => {
+    const filtered: string[] = [];
+    const filteredFreqs: number[] = [];
+    taskTexts.forEach((t, i) => {
+      if (t.trim() !== '') {
+        filtered.push(t);
+        filteredFreqs.push(taskFrequencies[i] || 1);
+      }
+    });
+    setTasks(filtered);
+    setFrequencies(filteredFreqs);
     setScreen('post-creation');
   };
 
@@ -68,7 +78,7 @@ export default function App() {
         <HomeFeed onNavigate={setScreen} postedTask={postedTask} />
       )}
       {screen === 'goal-progress' && (
-        <GoalProgress onNavigate={setScreen} />
+        <GoalProgress onNavigate={setScreen} tasks={tasks} frequencies={frequencies} />
       )}
       {screen === 'diary' && (
         <WeeklyDiary onNavigate={setScreen} tasks={tasks} onSave={handleSaveDiary} />

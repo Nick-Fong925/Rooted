@@ -12,10 +12,10 @@ interface WeeklyDiaryProps {
 // Stock photos pool — we cycle through these for each task
 const stockPhotos = [
   [
-    { day: 'Mon', image: 'https://images.unsplash.com/photo-1772569874251-60a09d41604f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3JuaW5nJTIwd2FsayUyMG91dGRvb3IlMjBuYXR1cmUlMjBwYXRofGVufDF8fHx8MTc3Mzk0NzkyM3ww&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Started the day right' },
-    { day: 'Wed', image: 'https://images.unsplash.com/photo-1767806580462-04ac27b4d4e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjB3YWxraW5nJTIwbGVhZnklMjBmb3Jlc3QlMjBwYXRofGVufDF8fHx8MTc3MzgxMjI2Nnww&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Found a new trail' },
-    { day: 'Fri', image: 'https://images.unsplash.com/photo-1618020669553-9ee35740052d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3JuaW5nJTIwd2FsayUyMHN1bnJpc2UlMjBvdXRkb29yfGVufDF8fHx8MTc3MzgxMjI2OHww&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Sunrise was incredible' },
-    { day: 'Sat', image: 'https://images.unsplash.com/photo-1717883042982-6570a9fb6b49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBoaWtpbmclMjB0cmFpbCUyMG5hdHVyZXxlbnwxfHx8fDE3NzM4MTIyNjl8MA&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Weekend energy' },
+    { day: 'Mon', image: 'https://images.unsplash.com/photo-1529473814998-077b4fec6770?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Cafe reading session' },
+    { day: 'Wed', image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Lost in a good chapter' },
+    { day: 'Fri', image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Stacked up this week' },
+    { day: 'Sat', image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Weekend reading vibes' },
   ],
   [
     { day: 'Mon', image: 'https://images.unsplash.com/photo-1553627558-d738c10f89da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcGVuJTIwYm9vayUyMHdvb2RlbiUyMHRhYmxlJTIwcmVhZGluZ3xlbnwxfHx8fDE3NzM5NDg1NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080', caption: 'Quiet morning pages' },
